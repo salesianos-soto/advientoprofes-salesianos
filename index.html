@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Con Don Bosco hacia Belén</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: recogido y cálido; un camino de oración del claustro.
+   IDEA: un mapa antiguo de pergamino de la Tierra Santa, con la ruta de María y José de Nazaret a Belén.
+   PICTURE: el propio mapa, entero en una pantalla: mares, Jordán, montes, pueblos, 27 hitos y la estrella sobre Belén.
+   COLOUR and TYPE: pergamino y tinta sepia sobre el verde bosque de la casa; dorado para lo que se abre, borgoña para lo cumplido; Playfair Display + Plus Jakarta Sans.
+   LAYOUT: cabecera de una línea; mapa a toda la altura; en escritorio, panel lateral con corona, progreso y etapa de hoy; en móvil, el panel bajo el mapa. */
+:root{color-scheme:dark;--g0:#102a20;--g1:#1f4b39;--gold:#d4af37;--gold2:#f3dc91;--cream:#fdfbf7;--red:#7a2021;--ink:#f6f1e3;--mute:#cfc9b4;--sepia:#5a3f22;
+--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Plus Jakarta Sans',Inter,system-ui,sans-serif}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:radial-gradient(120% 70% at 50% 0%,#1f4b39,#102a20 70%);background-color:var(--g0);color:var(--ink);font:16px/1.55 var(--sans);overflow-x:clip;min-height:100vh}
+.bar0{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(3vw,14px);max-width:1300px;margin:0 auto}
+.bar0 h1{margin:0;font-family:var(--serif);font-weight:700;font-size:clamp(20px,3vw,28px);line-height:1.1;color:var(--cream)}
+.bar0 h1 em{display:block;font-style:italic;font-weight:500;font-size:.62em;color:var(--gold2);margin-top:2px}
+.mini{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--gold2);white-space:nowrap}
+.mini .track{width:72px;height:8px;border-radius:99px;background:rgba(253,251,247,.12);overflow:hidden;border:1px solid rgba(212,175,55,.3)}
+.mini .track i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s}
+
+.main{display:grid;grid-template-columns:minmax(0,auto) 380px;justify-content:center;gap:28px;max-width:1300px;margin:0 auto;padding:0 max(3vw,14px) 24px;align-items:start}
+.mapwrap{height:calc(100vh - 74px);height:calc(100svh - 74px);max-width:100%;aspect-ratio:600/1120;position:relative;margin:0 auto}
+.mapwrap svg{width:100%;height:100%;display:block;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.stop{cursor:pointer;outline:none}
+.stop:focus-visible .ring{stroke:#fff;stroke-width:5}
+.stop .hit{fill:transparent}
+.stop .lab{font:700 19px var(--sans);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.stop .mon{font:700 10px var(--sans);text-anchor:middle;pointer-events:none}
+.pulse{animation:pulse 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(1)}50%{opacity:.7;transform:scale(1.25)}}
+.place{cursor:pointer;outline:none}.phit{fill:transparent;stroke:transparent}.place:hover .phit,.place:focus-visible .phit{fill:rgba(212,175,55,.12);stroke:#7a2021;stroke-width:2;stroke-dasharray:5 4}.place:focus-visible .badge circle{stroke:#fff;stroke-width:3}
+.spin{animation:spin 14s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes spin{to{transform:rotate(360deg)}}
+.psheet h2{font-family:var(--serif);font-size:28px;line-height:1.1;margin:0;color:var(--g0)}.psheet .kind{display:inline-block;margin-top:6px;font-size:12.5px;font-weight:700;color:var(--red);border:1px solid var(--red);border-radius:999px;padding:2px 10px}.psheet h3{margin:18px 0 8px;font:700 13px/1.2 var(--sans);color:var(--g1)}.psheet ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}.psheet li{background:#f7f1e1;border-left:4px solid var(--gold);border-radius:4px 12px 12px 4px;padding:9px 12px;font-size:15.5px;line-height:1.5}.psheet li cite{display:block;font-style:normal;font-weight:700;font-size:13px;color:var(--red);margin-top:2px}.psheet .hist{margin:0;font-size:16px;line-height:1.6}.psheet .stg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.psheet .stg button{min-height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--g1);background:#fff;color:var(--g1);font:600 14.5px var(--sans);cursor:pointer}.psheet .stg button.lk{opacity:.55}.psheet .stg button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fam{transition:transform 1.2s cubic-bezier(.4,.1,.2,1)}
+.bob{animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.shake{animation:shake .45s;transform-box:fill-box;transform-origin:center}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+.side{position:sticky;top:12px;display:grid;gap:14px;padding-top:4px}
+.card{background:rgba(16,42,32,.75);border:1px solid rgba(212,175,55,.3);border-radius:18px;padding:16px 18px}
+.wkrow{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}
+.wreath{width:92px;height:74px}
+.wk b{display:block;font-family:var(--serif);font-size:18px;color:var(--cream);line-height:1.2}
+.wk span{font-family:var(--serif);font-style:italic;color:var(--gold2);font-size:15px}
+.prog .row{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-weight:600;margin:14px 0 6px}
+.prog .row span:last-child{color:var(--gold2)}
+.bar{height:10px;border-radius:999px;background:rgba(253,251,247,.1);overflow:hidden;border:1px solid rgba(212,175,55,.25)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s}
+.today h2{margin:0 0 4px;font-family:var(--serif);font-size:21px;color:var(--gold2);line-height:1.2}
+.today p{margin:0;font-size:14.5px;color:var(--mute);line-height:1.5}
+.today .go{margin-top:12px;width:100%;min-height:48px;border-radius:14px;border:0;background:var(--gold);color:var(--g0);font:700 16px var(--sans);cursor:pointer}
+.today .go:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:13px;color:var(--mute)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:16px;height:16px;border-radius:50%;flex:none}
+
+@media(max-width:600px){.bar0 h1{font-size:19px}.bar0 h1 em{font-size:12px}.bar0 .full{display:none}}
+@media(max-width:999px){
+ .main{grid-template-columns:minmax(0,1fr);gap:16px}
+ .mapwrap{height:auto;width:100%;max-height:calc(100svh - 70px);width:min(100%,calc((100svh - 70px)*600/1120))}
+ .side{position:static;max-width:560px;margin:0 auto;width:100%}
+}
+
+/* Modal */
+.ov{position:fixed;inset:0;z-index:20;background:rgba(6,18,13,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.modal{width:min(600px,100%);max-height:calc(100vh - 32px);max-height:calc(100svh - 32px);overflow:auto;background:var(--cream);color:#1b2a22;border-radius:22px;border:1px solid var(--gold);box-shadow:0 30px 80px rgba(0,0,0,.5);padding:24px clamp(18px,4vw,30px) 22px;position:relative;animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+.x{position:absolute;right:10px;top:10px;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#1f4b39;font-size:26px;cursor:pointer}
+.x:hover{background:rgba(31,75,57,.08)}
+.x:focus-visible,.btn:focus-visible,.foot input:focus-visible,.foot button:focus-visible,.read:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.mhead{display:flex;align-items:center;gap:16px;margin-bottom:16px;padding-right:40px}
+.mil{width:92px;height:92px;border-radius:24px;background:radial-gradient(circle at 50% 40%,#2a6148,#102a20);display:grid;place-items:center;flex:none;box-shadow:0 0 0 3px rgba(212,175,55,.45)}
+.mil svg{width:74px;height:74px}
+.mhead h2{font-family:var(--serif);font-size:27px;line-height:1.1;margin:0;color:var(--g0)}
+.mhead small{display:block;font-size:13.5px;color:#56665b;font-weight:600;margin-top:5px}
+.mplace{display:block;font-size:13.5px;color:var(--g1);font-weight:700;margin-top:3px}
+.daytype{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;color:var(--red);border:1px solid var(--red);border-radius:999px;padding:2px 10px}
+.verse{background:linear-gradient(160deg,var(--g1),var(--g0));color:var(--cream);border-radius:16px;padding:18px 22px;margin-bottom:12px}
+.verse .vk{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--gold2);margin-bottom:8px}
+.verse p{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.45;margin:0 0 10px}
+.verse cite{font-style:normal;font-weight:700;font-size:14px;color:var(--gold2)}
+.read{display:inline-flex;align-items:center;gap:6px;margin-top:12px;min-height:44px;padding:0 14px;border-radius:12px;border:1px solid rgba(243,220,145,.6);color:var(--gold2);font-weight:600;font-size:14.5px;text-decoration:none}
+.read:hover{background:rgba(243,220,145,.1)}
+.refl{border-left:4px solid var(--gold);background:#f7f1e1;border-radius:4px 16px 16px 4px;padding:14px 18px;margin-bottom:12px}
+.refl h3,.act h3{margin:0 0 6px;font:700 13px/1.2 var(--sans);color:var(--g1)}
+.refl p{margin:0;font-size:16px;line-height:1.6}
+.refl .q{margin-top:10px;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--red)}
+.act{border:1px solid rgba(212,175,55,.55);background:#fbf4de;border-radius:16px;padding:14px 18px;margin-bottom:18px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border-radius:999px;padding:4px 12px;margin-bottom:8px}
+.chip.c{background:var(--red);color:var(--cream)}
+.chip.p{background:var(--g1);color:var(--gold2)}
+.act p{margin:0;font-size:16.5px;line-height:1.55}
+.btns{display:grid;gap:10px}
+.btn{min-height:48px;border-radius:14px;border:1px solid transparent;font:600 16px/1.2 var(--sans);cursor:pointer;padding:12px 16px;transition:background .2s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn.ok{background:var(--g1);color:var(--cream)}
+.btn.ok:hover{background:var(--g0)}
+.btn.ok.is{background:var(--red)}
+.btn.sh{background:transparent;color:var(--g1);border-color:var(--g1)}
+.btn.sh:hover{background:rgba(31,75,57,.07)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;z-index:40;background:var(--cream);color:var(--g0);border:1px solid var(--gold);border-left:6px solid var(--gold);padding:12px 18px;border-radius:12px;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-width:calc(100vw - 32px);transition:all .3s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+footer{text-align:center;padding:20px max(4vw,16px) 36px;max-width:820px;margin:0 auto}
+.motto{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.4vw,22px);color:var(--gold2);line-height:1.4;margin:0 0 16px;text-wrap:balance}
+.fine{font-size:13px;color:var(--mute);margin:0 0 14px;line-height:1.5}
+.fine a{color:var(--gold2)}
+.foot{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 24px;font-size:13px;color:var(--mute)}
+.foot label{display:inline-flex;align-items:center;gap:8px;cursor:pointer;min-height:44px}
+.foot input{width:18px;height:18px;accent-color:var(--gold)}
+.foot button{background:none;border:0;color:var(--mute);font:inherit;text-decoration:underline;cursor:pointer;min-height:44px;padding:0 4px}
+.logo{margin:26px auto 0;display:inline-block;background:#fff;border-radius:16px;padding:14px 20px;box-shadow:0 8px 20px rgba(0,0,0,.3)}.logo img{display:block;width:150px;height:auto}
+.foot button.warn{color:var(--gold2);font-weight:700}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bar0">
+  <h1>Con Don Bosco hacia Belén<em>Calendario de Adviento<span class="full"> · Educadores Salesianos</span></em></h1>
+  <div class="mini" aria-hidden="true"><span id="mn"></span><span class="track"><i id="mf"></i></span></div>
+</div>
+
+<div class="main">
+  <div class="mapwrap"><svg id="map" viewBox="0 0 600 1120" role="img" aria-label="Mapa del camino de María y José de Nazaret a Belén con las 27 etapas de Adviento"></svg></div>
+  <aside class="side">
+    <div class="card today" id="todayCard"></div>
+    <div class="card">
+      <div class="wkrow"><div class="wreath" id="wreath" aria-hidden="true"></div><div class="wk" id="wk"></div></div>
+      <div class="prog" aria-live="polite">
+        <div class="row"><span>Camino recorrido</span><span id="pt"></span></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="27" aria-valuenow="0" id="pb"><i id="pf"></i></div>
+      </div>
+    </div>
+    <div class="card legend" aria-hidden="true">
+      <span><i style="background:#5b3a78;border:2px solid #3a2350"></i>Domingos de Adviento</span>
+      <span><i style="background:#e39bb5;border:2px solid #9c4f6e"></i>Domingo Gaudete</span>
+      <span><i style="background:#9ccbea;border:2px solid #3f6f99"></i>Inmaculada</span>
+      <span><i style="background:#fffdf5;border:3px solid #d4af37"></i>Nochebuena y Navidad</span>
+      <span><i style="background:#f6ecd2;border:2px dashed #6b4a26"></i>Aún cerrada</span>
+      <span><i style="background:#f6ecd2;border:2px solid #6b4a26;box-shadow:inset 3px 3px 0 -1px #d4af37"></i>Lista, sin abrir</span>
+      <span><i style="background:#f6ecd2;border:2px solid #6b4a26"></i>Abierta</span>
+      <span><i style="background:#f6ecd2;border:2px solid #6b4a26;position:relative"></i>⭐ Acción hecha</span>
+      <span><i style="background:#f6ecd2;border:2px solid #6b4a26;box-shadow:inset 0 0 0 3px #f6ecd2,inset 0 0 0 4px #6b4a26"></i>Sin clase</span>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p class="motto">Casa que acoge, parroquia que evangeliza, escuela que educa y patio donde encontrarse.</p>
+  <p class="fine">El evangelio no detalla el recorrido de María y José: la ruta por el valle del Jordán es una de las que podían seguir los galileos para subir a Judea; la otra, más corta, cruzaba Samaria. Evangelio de cada día según el calendario litúrgico (Adviento, ciclo B); versículos de la <a href="https://www.conferenciaepiscopal.es/biblia/" rel="noopener">Sagrada Biblia, versión oficial de la Conferencia Episcopal Española</a>.</p>
+  <div class="foot">
+    <button type="button" id="reset">Reiniciar mi progreso</button>
+  </div>
+  <div class="logo"><img src="data:image/png;base64,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" alt="Salesianos" width="180" height="119"></div>
+</footer>
+
+<div class="ov" id="ov" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt" id="modal">
+    <button class="x" id="mx" aria-label="Cerrar">×</button>
+    <div class="mhead"><div class="mil" id="mil"></div><div><h2 id="mt"></h2><small id="ms"></small><span class="mplace" id="mpl"></span><span class="daytype" id="mdt"></span></div></div>
+    <div class="verse"><span class="vk"><span>Evangelio del día</span><span id="mref"></span></span><p id="mv"></p><cite id="mr"></cite><br><a class="read" id="mlink" href="#" target="_blank" rel="noopener">Leer el evangelio completo ↗</a></div>
+    <div class="refl"><h3>Para reflexionar</h3><p id="mrf"></p><p class="q" id="mq"></p></div>
+    <div class="act"><h3>Acción del día</h3><span class="chip" id="mc"></span><p id="ma"></p></div>
+    <div class="btns">
+      <button class="btn ok" id="bok"></button>
+      <button class="btn sh" id="bsh">📋 Copiar para compartir con el claustro</button>
+    </div>
+  </div>
+</div>
+<div class="ov" id="ovp" aria-hidden="true">
+  <div class="modal psheet" role="dialog" aria-modal="true" aria-labelledby="pname" id="pmodal">
+    <button class="x" id="px" aria-label="Cerrar">×</button>
+    <h2 id="pname"></h2><span class="kind" id="pkind"></span>
+    <h3>En la Biblia</h3><ul id="pbib"></ul>
+    <h3>En tiempos de Jesús</h3><p class="hist" id="phis"></p>
+    <div id="pstg"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+{
+const star5=(x,y,r,f)=>{let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;p+=(i?'L':'M')+(x+rr*Math.cos(a)).toFixed(1)+' '+(y+rr*Math.sin(a)).toFixed(1)}return `<path d="${p}Z" fill="${f}"/>`};
+const flame=(x,y,s=1)=>`<path d="M${x} ${y}c${3.5*s} ${4*s} ${3.5*s} ${7*s} 0 ${9*s}-${3.5*s}-${2*s}-${3.5*s}-${5*s} 0-${9*s}z" fill="#f3b23b"/><path d="M${x} ${y+3.5*s}c${1.4*s} ${2*s} ${1.4*s} ${3.4*s} 0 ${4.6*s}-${1.4*s}-${1.2*s}-${1.4*s}-${2.6*s} 0-${4.6*s}z" fill="#fff3c4"/>`;
+const IL={
+star:()=>`<circle cx="32" cy="30" r="24" fill="#f3dc91" opacity=".16"/><path d="M32 2v10M32 48v12M4 30h10M50 30h10M12 10l7 7M45 43l7 7M52 10l-7 7M19 43l-7 7" stroke="#f3dc91" stroke-width="2" stroke-linecap="round" opacity=".6"/>${star5(32,30,19,'#f3dc91')}${star5(32,31,9,'#fff8de')}<circle cx="9" cy="54" r="1.6" fill="#fdfbf7"/><circle cx="56" cy="56" r="1.3" fill="#fdfbf7"/>`,
+candle:()=>`<ellipse cx="32" cy="22" rx="12" ry="12" fill="#f3dc91" opacity=".2"/><rect x="24" y="27" width="16" height="29" rx="3" fill="#fdfbf7" stroke="#d4af37" stroke-width="2"/><path d="M28 27v8c0 2 3 2 3 0v-3" stroke="#e9e1c9" stroke-width="2" fill="none"/><path d="M32 27v-4" stroke="#4a3a22" stroke-width="2"/>${flame(32,10)}<path d="M10 60c4-7 11-7 15-2-4 5-11 6-15 2z" fill="#2f6b4f"/><path d="M54 60c-4-7-11-7-15-2 4 5 11 6 15 2z" fill="#2f6b4f"/><circle cx="30" cy="58" r="3" fill="#c0392b"/><circle cx="35" cy="59" r="3" fill="#c0392b"/>`,
+bell:()=>`<path d="M22 8c-4-5-11-1-7 4 2 2 6 1 9-1zM42 8c4-5 11-1 7 4-2 2-6 1-9-1z" fill="#c0392b"/><circle cx="32" cy="9" r="3" fill="#8c2a2b"/><path d="M32 13c-10 0-15 8-15 18v9l-5 8h40l-5-8v-9c0-10-5-18-15-18z" fill="#d4af37" stroke="#a8861f" stroke-width="2"/><path d="M23 33c0-7 3-12 8-14" stroke="#f3dc91" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="52" r="4.5" fill="#a8861f"/><path d="M52 36l5-3M54 44l6 0M12 36l-5-3M10 44H4" stroke="#f3dc91" stroke-width="2" stroke-linecap="round"/>`,
+angel:()=>`<path d="M22 30c-11-4-17 6-15 17 7-1 12-6 15-11z" fill="#fdfbf7" stroke="#d4af37" stroke-width="1.5"/><path d="M42 30c11-4 17 6 15 17-7-1-12-6-15-11z" fill="#fdfbf7" stroke="#d4af37" stroke-width="1.5"/><path d="M32 24L19 59h26z" fill="#fdfbf7" stroke="#d4af37" stroke-width="2"/><path d="M26 44h12" stroke="#d4af37" stroke-width="1.5"/><circle cx="32" cy="18" r="7" fill="#f2d2b1"/><path d="M25 17c0-6 3-9 7-9s7 3 7 9c-2-3-4-4-7-4s-5 1-7 4z" fill="#c9952f"/><ellipse cx="32" cy="7" rx="8" ry="2.6" fill="none" stroke="#f3dc91" stroke-width="2"/>${star5(32,36,4.5,'#d4af37')}`,
+sheep:()=>`<g fill="#fdfbf7" stroke="#d8cfb4" stroke-width="1.5"><circle cx="26" cy="32" r="9"/><circle cx="36" cy="28" r="10"/><circle cx="45" cy="34" r="8.5"/><circle cx="31" cy="40" r="9"/><circle cx="42" cy="42" r="8"/></g><path d="M28 47v10M35 48v10M42 48v9M47 46v9" stroke="#3a2f25" stroke-width="3" stroke-linecap="round"/><ellipse cx="17" cy="32" rx="7" ry="8.5" fill="#3a2f25"/><path d="M12 26c-4-2-7 1-5 3 2 1 4 0 5-1z" fill="#3a2f25"/><circle cx="15" cy="31" r="1.4" fill="#fff"/><path d="M14 18c4-4 8-4 10 0" stroke="#f3dc91" stroke-width="1.5" fill="none" opacity=".7"/>`,
+gift:()=>`<rect x="12" y="28" width="40" height="29" rx="3" fill="#b8333a"/><rect x="10" y="21" width="44" height="10" rx="2.5" fill="#8c2a2b"/><rect x="29" y="21" width="6" height="36" fill="#d4af37"/><rect x="12" y="38" width="40" height="5" fill="#d4af37" opacity=".85"/><path d="M32 21c-5-12-17-10-13-3 2 4 9 4 13 3zM32 21c5-12 17-10 13-3-2 4-9 4-13 3z" fill="none" stroke="#f3dc91" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="21" r="3" fill="#f3dc91"/>`,
+tree:()=>`<path d="M32 10l-13 17h7l-10 13h8L12 53h40L40 40h8L38 27h7z" fill="#2f7a55" stroke="#1f4b39" stroke-width="1.5" stroke-linejoin="round"/><path d="M22 33q10 5 20 0M18 46q14 6 28 0" stroke="#f3dc91" stroke-width="1.6" fill="none"/><rect x="28" y="53" width="8" height="7" rx="1" fill="#8a5a3b"/>${star5(32,8,6,'#f3dc91')}<circle cx="27" cy="31" r="2.2" fill="#c0392b"/><circle cx="38" cy="44" r="2.2" fill="#d4af37"/><circle cx="23" cy="47" r="2.2" fill="#fdfbf7"/><circle cx="36" cy="23" r="2" fill="#d4af37"/><circle cx="44" cy="50" r="2" fill="#c0392b"/>`,
+heart:()=>`<circle cx="32" cy="34" r="22" fill="#f3dc91" opacity=".14"/><path d="M32 54s-17-10-21-20c-3-8 2-17 10-17 5 0 8 3 11 7 3-4 6-7 11-7 8 0 13 9 10 17-4 10-21 20-21 20z" fill="#b8333a" stroke="#d4af37" stroke-width="2"/><path d="M19 27c1-3 3-5 6-5" stroke="#f6c9c9" stroke-width="2.5" fill="none" stroke-linecap="round"/>${flame(32,4)}`,
+ball:()=>`<path d="M32 4v8" stroke="#d4af37" stroke-width="1.5"/><rect x="27" y="11" width="10" height="6" rx="1.5" fill="#d4af37"/><circle cx="32" cy="38" r="20" fill="#1f6a8a" stroke="#d4af37" stroke-width="2"/><path d="M13 34q19 8 38 0M13 42q19 8 38 0" stroke="#f3dc91" stroke-width="2" fill="none"/>${star5(32,38,4,'#f3dc91')}<ellipse cx="24" cy="29" rx="4" ry="6" fill="#fff" opacity=".35" transform="rotate(30 24 29)"/>`,
+holly:()=>`<path d="M32 36c-6-14-20-16-26-10 4 2 3 6 7 6-1 4 3 6 6 5 0 4 6 4 13-1z" fill="#2f7a55" stroke="#1f4b39" stroke-width="1.5"/><path d="M32 36c6-14 20-16 26-10-4 2-3 6-7 6 1 4-3 6-6 5 0 4-6 4-13-1z" fill="#2f7a55" stroke="#1f4b39" stroke-width="1.5"/><path d="M32 36c-8 2-12 12-8 22 2-3 5-2 6-5 3 1 5-2 4-5 3-1 3-6-2-12z" fill="#3a8a63" stroke="#1f4b39" stroke-width="1.5"/><circle cx="30" cy="34" r="4" fill="#c0392b"/><circle cx="37" cy="33" r="4" fill="#c0392b"/><circle cx="33" cy="39" r="4" fill="#c0392b"/><circle cx="29" cy="32.5" r="1.2" fill="#fff" opacity=".7"/><circle cx="36" cy="31.5" r="1.2" fill="#fff" opacity=".7"/>`,
+boat:()=>`<path d="M6 50q8-4 16 0t16 0 16 0 10 0v10H6z" fill="#1f6a8a"/><path d="M12 42h40l-6 9H18z" fill="#8a5a3b" stroke="#5a3e28" stroke-width="1.5"/><path d="M32 42V12" stroke="#5a3e28" stroke-width="2.5"/><path d="M33 14q14 12 0 26z" fill="#fdfbf7" stroke="#d4af37" stroke-width="1.5"/><path d="M44 30q6 2 8 6M44 36l4 6" stroke="#d4af37" stroke-width="1.2" fill="none"/><path d="M48 26c3-2 6-2 7 0-1 2-4 2-7 0zM55 26l3-2v4z" fill="#f3dc91"/>`,
+nativity:()=>`<circle cx="32" cy="44" r="16" fill="#f3dc91" opacity=".22"/><path d="M6 30L32 13l26 17" fill="none" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 29v28M53 29v28" stroke="#8a5a3b" stroke-width="3"/><path d="M5 58h54" stroke="#8a5a3b" stroke-width="3" stroke-linecap="round"/>${star5(32,6,5.5,'#f3dc91')}<path d="M17 57c0-10 2-15 6-17 4 2 5 7 5 17z" fill="#3c5a99"/><circle cx="22.5" cy="36" r="3.6" fill="#f2d2b1"/><path d="M18.5 37c0-5 2-7 4-7s4 2 4 7l-1 3h-6z" fill="#e7eef8" opacity=".9"/><path d="M39 57c0-11 2-17 6-19 4 2 5 8 5 19z" fill="#8a5a3b"/><circle cx="44.5" cy="34" r="3.6" fill="#f2d2b1"/><path d="M52 28v29" stroke="#5a3e28" stroke-width="2"/><path d="M26 50h13l-2.5 7h-8z" fill="#c69a5b"/><path d="M26 50h13" stroke="#e8c07a" stroke-width="2"/><ellipse cx="33" cy="49" rx="5.5" ry="2.6" fill="#fdfbf7"/><circle cx="28.8" cy="48.4" r="2.2" fill="#f2d2b1"/>`
+};
+const wreath=lit=>{const cols=['#5b3a78','#5b3a78','#d98aa6','#5b3a78'],xs=[17,27,37,47],hs=[22,26,24,28];let c='';
+ xs.forEach((x,i)=>{const top=46-hs[i];c+=`<rect x="${x-3.5}" y="${top}" width="7" height="${hs[i]}" rx="1.5" fill="${cols[i]}"/><path d="M${x} ${top}v-2" stroke="#3a2f25" stroke-width="1.2"/>`+(i<lit?`<circle cx="${x}" cy="${top-5}" r="6" fill="#f3dc91" opacity=".28"/>`+flame(x,top-9,.75):'')});
+ return `<ellipse cx="32" cy="49" rx="27" ry="8" fill="none" stroke="#2f7a55" stroke-width="8"/><ellipse cx="32" cy="49" rx="27" ry="8" fill="none" stroke="#1f4b39" stroke-width="2" stroke-dasharray="3 5"/>${c}<g fill="#c0392b"><circle cx="9" cy="50" r="2.2"/><circle cx="22" cy="56" r="2.2"/><circle cx="42" cy="56.5" r="2.2"/><circle cx="55" cy="51" r="2.2"/><circle cx="32" cy="42" r="2"/></g>`};
+const svg=(k,lit)=>`<svg viewBox="0 0 64 64" aria-hidden="true">${k==='wreath'?wreath(lit):IL[k]()}</svg>`;
+const BOW=`<svg class="bow" viewBox="0 0 44 30" aria-hidden="true"><path d="M22 15C14 2 2 4 5 12c2 6 11 5 17 3zM22 15C30 2 42 4 39 12c-2 6-11 5-17 3z" fill="#d4af37" stroke="#a8861f" stroke-width="1.5"/><path d="M20 16l-6 13M24 16l6 13" stroke="#d4af37" stroke-width="4" stroke-linecap="round"/><circle cx="22" cy="15" r="3.5" fill="#f3dc91"/></svg>`;
+
+
+const D=[
+{m:10,d:29,t:"dom",w:1,ref:"Mc 13,33-37",b:"marcos",ch:13,kr:"Mc 13,33",il:"wreath",cat:"c",note:"Empieza el Adviento",
+ k:"Estad atentos, vigilad: pues no sabéis cuándo es el momento.",
+ r:"Jesús deja a cada siervo su tarea y al portero el encargo de velar. En el colegio también somos porteros. Velar no es vigilar para pillar en falta: es estar despiertos para reconocer al Señor que llega en cada alumno, muchas veces de improviso. Don Bosco lo llamaba asistencia, estar presentes con el corazón despierto.",
+ q:"¿Qué alumno está llamando a mi puerta sin que me haya dado cuenta?",
+ a:"Enciende la primera vela de la corona y escribe en un papel los nombres de tus alumnos. Mañana empieza el camino y quieres llevarlos a todos contigo, despierto a lo que cada uno necesite."},
+{m:10,d:30,t:"cls",sub:"San Andrés, apóstol",pl:"San Andrés",ref:"Mt 4,18-22",b:"mateo",ch:4,kr:"Mt 4,19",il:"boat",cat:"p",
+ k:"«Venid en pos de mí y os haré pescadores de hombres».",
+ r:"Andrés y Pedro estaban faenando cuando Jesús pasó por la orilla. La llamada llega en medio del trabajo de cada día, no en un retiro. También nuestra vocación de educadores nació así: alguien nos miró, nos llamó por nuestro nombre y nos invitó a seguirle. Hoy Jesús vuelve a pasar junto a la orilla de nuestra rutina.",
+ q:"¿Qué «redes» me cuesta soltar para seguirle con más libertad en el aula?",
+ a:"Como Jesús en la orilla, llama por su nombre a un alumno que suela pasar desapercibido e invítale a ayudarte en algo de la clase."},
+{m:11,d:1,t:"cls",ref:"Lc 10,21-24",b:"lucas",ch:10,kr:"Lc 10,21",il:"star",cat:"c",
+ k:"«Te doy gracias, Padre, Señor del cielo y de la tierra, porque has escondido estas cosas a los sabios y entendidos, y las has revelado a los pequeños».",
+ r:"Jesús se llena de alegría al ver que el Padre se revela a los pequeños. Quien educa en Primaria lo comprueba cada día: los niños entienden cosas de Dios que a los mayores se nos escapan. Educar también es dejarse educar por ellos, con un corazón agradecido.",
+ q:"¿Qué me ha enseñado de Dios un alumno este trimestre?",
+ a:"Comienza la jornada con unos «Buenos Días» especiales: da gracias en voz alta por tus alumnos, recordando que en cada uno Dios ha sembrado una semilla de bien."},
+{m:11,d:2,t:"cls",ref:"Mt 15,29-37",b:"mateo",ch:15,kr:"Mt 15,32",il:"sheep",cat:"p",
+ k:"«Siento compasión de la gente, porque llevan ya tres días conmigo y no tienen qué comer».",
+ r:"Jesús no despide a la multitud cansada: se fija en su hambre y multiplica lo poco que tienen los discípulos. En el patio también hay niños con hambre: de compañía, de un juego, de alguien que se acerque. Siete panes parecen poco, pero en manos de Jesús alcanzan para todos.",
+ q:"¿A quién estoy despidiendo sin darme cuenta?",
+ a:"Haz presencia salesiana activa en el patio: acércate a charlar con algún alumno que suela quedarse solo o al margen."},
+{m:11,d:3,t:"cls",ref:"Mt 7,21.24-27",b:"mateo",ch:7,kr:"Mt 7,24",il:"bell",cat:"c",
+ k:"«El que escucha estas palabras mías y las pone en práctica se parece a aquel hombre prudente que edificó su casa sobre roca».",
+ r:"No basta con decir «Señor, Señor»: la fe se edifica con hechos. Tampoco un clima de aula alegre y sereno se improvisa; se construye día a día sobre la roca de la coherencia. La alegría salesiana no es superficial: tiene cimientos y aguanta las tormentas de un mal día.",
+ q:"¿Sobre qué roca apoyo mi trabajo cuando llegan las tormentas?",
+ a:"Vive la máxima de Santo Domingo Savio, alumno de Don Bosco: «La santidad consiste en estar siempre alegres». Entra hoy a cada clase con una sonrisa sincera."},
+{m:11,d:4,t:"cls",ref:"Mt 9,27-31",b:"mateo",ch:9,kr:"Mt 9,28-29",il:"gift",cat:"p",
+ k:"«¿Creéis que puedo hacerlo?». Contestaron: «Sí, Señor». […] «Que os suceda conforme a vuestra fe».",
+ r:"Dos ciegos siguen a Jesús a gritos, y él les pregunta por su fe antes de curarlos. A un claustro también lo sostiene la fe compartida: creer juntos que estos niños pueden crecer, aunque a veces no veamos los frutos. La fe de un compañero puede devolvernos la vista en los días grises.",
+ q:"¿En qué compañero puedo apoyar hoy mi fe… o sostener la suya?",
+ a:"Cuida el espíritu de familia antes del puente: invita a un café o lleva algo dulce para compartir en la sala de profesores."},
+{m:11,d:5,t:"sab",ref:"Mt 9,35–10,1.5a.6-8",b:"mateo",ch:9,kr:"Mt 9,36; 10,8",il:"holly",cat:"c",
+ k:"Al ver a las muchedumbres, se compadecía de ellas, porque estaban extenuadas y abandonadas, «como ovejas que no tienen pastor». […] «Gratis habéis recibido, dad gratis».",
+ r:"Jesús mira a la gente cansada y se conmueve. Esa mirada también es para ti, que llegas al puente agotado del trimestre. Antes de enviar a los Doce, Jesús los llama junto a sí. Descansar en él no es un lujo: es lo que nos permite volver a dar gratis lo que gratis hemos recibido.",
+ q:"¿Me dejo mirar por Jesús con la misma compasión con la que intento mirar a mis alumnos?",
+ a:"Empieza el puente: pon las tensiones de las evaluaciones en manos de María Auxiliadora y regálate estos días libres de correcciones y correos."},
+{m:11,d:6,t:"dom",w:2,ref:"Mc 1,1-8",b:"marcos",ch:1,kr:"Mc 1,3",il:"wreath",cat:"c",
+ k:"Voz del que grita en el desierto: «Preparad el camino del Señor, enderezad sus senderos».",
+ r:"Juan prepara el camino con sencillez y señala a otro más grande que él. El educador salesiano hace lo mismo: no se pone en el centro, sino que allana caminos para que cada alumno se encuentre con lo mejor de sí mismo y con Dios. A veces hay senderos torcidos que enderezar: relaciones tensas, etiquetas que pesan.",
+ q:"¿Qué camino de mi aula necesita allanarse esta semana?",
+ a:"Al encender la segunda vela, elige una relación tensa con un alumno o un prejuicio que arrastres, y comprométete a cuidarlo esta semana."},
+{m:11,d:7,t:"fes",ref:"Lc 5,17-26",b:"lucas",ch:5,kr:"Lc 5,20",il:"heart",cat:"c",
+ k:"Él, viendo la fe de ellos, dijo: «Hombre, tus pecados están perdonados».",
+ r:"El paralítico llega a Jesús gracias a unos amigos que abren el techo para bajarlo en su camilla, y Jesús se fija en «la fe de ellos». Todos hemos sido llevados alguna vez por otros: un maestro, un salesiano, alguien que creyó en nosotros cuando no podíamos caminar solos.",
+ q:"¿Quién me llevó hasta Jesús? ¿A quién estoy llevando yo?",
+ a:"Día de descanso: agradece en oración —o con un mensaje— a aquel profesor o salesiano que te ayudó a llegar hasta aquí."},
+{m:11,d:8,t:"inm",ref:"Lc 1,26-38",b:"lucas",ch:1,kr:"Lc 1,28",il:"angel",cat:"c",note:"Inmaculada Concepción",sub:"Inmaculada Concepción de la Virgen María",
+ k:"«Alégrate, llena de gracia, el Señor está contigo».",
+ r:"El saludo del ángel empieza invitando a la alegría. A María, la llena de gracia, confió Don Bosco toda su obra. Un 8 de diciembre de 1841 comenzó el Oratorio rezando un Avemaría con Bartolomé Garelli, un muchacho que no sabía casi nada. Toda la obra salesiana nació de esa acogida.",
+ q:"¿Qué «Garelli» está esperando que alguien le dirija la palabra?",
+ a:"Participa en la Eucaristía de la Inmaculada y reza un Avemaría por el alumno que más necesite sentirse acogido."},
+{m:11,d:9,t:"cls",ref:"Mt 11,28-30",b:"mateo",ch:11,kr:"Mt 11,28-29",il:"candle",cat:"p",
+ k:"«Venid a mí todos los que estáis cansados y agobiados, y yo os aliviaré. Tomad mi yugo sobre vosotros y aprended de mí, que soy manso y humilde de corazón».",
+ r:"Jesús no promete quitar el yugo, sino llevarlo con nosotros. Aprender de su mansedumbre es la clave del Sistema Preventivo: razón, religión y amabilidad. A la vuelta del puente muchos alumnos llegan cargados, y nosotros también. Un saludo por su nombre en la puerta puede aliviar más de lo que creemos.",
+ q:"¿Cómo puede notar hoy un alumno que en mi aula se descansa?",
+ a:"Con el espíritu de Garelli, espera en la puerta y saluda por su nombre al alumno nuevo o con dificultades por el que rezaste ayer."},
+{m:11,d:10,t:"cls",ref:"Mt 11,11-15",b:"mateo",ch:11,kr:"Mt 11,11",il:"ball",cat:"p",
+ k:"«En verdad os digo que no ha nacido de mujer uno más grande que Juan el Bautista; aunque el más pequeño en el reino de los cielos es más grande que él».",
+ r:"Jesús elogia a Juan, pero añade una sorpresa: el más pequeño del Reino es todavía más grande. Así mira Dios a los pequeños, y así deberíamos mirar a nuestros alumnos: no por sus notas, sino por lo que están llamados a ser. Una palabra escrita a tiempo puede ayudar a un niño a creérselo.",
+ q:"¿A qué «pequeño» de mi clase le cuesta sentirse grande?",
+ a:"Practica la amorevolezza: escribe una nota de ánimo en el cuaderno o el examen de un alumno que necesite sentir que confías en él."},
+{m:11,d:11,t:"cls",ref:"Mt 11,16-19",b:"mateo",ch:11,kr:"Mt 11,17",il:"tree",cat:"p",
+ k:"«Hemos tocado la flauta, y no habéis bailado; hemos entonado lamentaciones, y no habéis llorado».",
+ r:"Jesús compara a su generación con niños que nunca están contentos con el juego. Es fácil caer en la queja: siempre falta algo, alguien no cumple. Pero la sabiduría se reconoce por sus obras, y muchas obras silenciosas sostienen el colegio cada día sin que nadie las aplauda.",
+ q:"¿Bailo con la música que suena en mi colegio, o solo veo lo que falta?",
+ a:"Agradece expresamente su labor al personal de administración, portería, limpieza o comedor, que hacen del colegio una casa que acoge."},
+{m:11,d:12,t:"sab",ref:"Mt 17,10-13",b:"mateo",ch:17,kr:"Mt 17,12",il:"bell",cat:"c",
+ k:"«Pero os digo que Elías ya ha venido y no lo reconocieron».",
+ r:"Los discípulos esperaban a Elías y no lo reconocieron en Juan. También nosotros podemos esperar grandes señales y no ver a Dios en lo pequeño: un niño que por fin lee de corrido, una pregunta inesperada, una sonrisa al entrar por la mañana.",
+ q:"¿Dónde ha pasado Dios por mi aula sin que lo reconociera?",
+ a:"Sábado tranquilo: anota tres anécdotas alegres o pequeños logros de tus alumnos en los que hayas visto pasar a Dios este trimestre."},
+{m:11,d:13,t:"dom",w:3,ref:"Jn 1,6-8.19-28",b:"juan",ch:1,kr:"Jn 1,6-7",il:"wreath",cat:"p",
+ k:"Surgió un hombre enviado por Dios, que se llamaba Juan: este venía como testigo, para dar testimonio de la luz.",
+ r:"Juan sabe quién es y quién no es. Su alegría consiste en señalar la luz. El domingo Gaudete nos recuerda que el educador no es la luz, sino testigo de ella, y que «en medio de vosotros hay uno que no conocéis»: a menudo, en el compañero de al lado.",
+ q:"¿De qué luz soy testigo ante mis compañeros?",
+ a:"Domingo de la alegría, con la vela rosa encendida: envía a un compañero del claustro un mensaje con algo bueno que hayas visto en él o en su clase."},
+{m:11,d:14,t:"cls",ref:"Mt 21,23-27",b:"mateo",ch:21,kr:"Mt 21,25",il:"candle",cat:"c",
+ k:"«El bautismo de Juan ¿de dónde venía, del cielo o de los hombres?».",
+ r:"Los jefes del pueblo cuestionan la autoridad de Jesús, y él les devuelve la pregunta. La verdadera autoridad no nace del cargo, sino de la coherencia y del amor. Don Bosco pedía a sus educadores que procuraran hacerse amar más que temer. Esa autoridad se alimenta en el silencio, ante Dios.",
+ q:"¿De dónde nace mi autoridad en el aula?",
+ a:"Dedica cinco minutos de silencio en la capilla del colegio o en tu aula antes de que suene el timbre para renovar tu vocación."},
+{m:11,d:15,t:"cls",ref:"Mt 21,28-32",b:"mateo",ch:21,kr:"Mt 21,28-29",il:"star",cat:"c",
+ k:"«Hijo, ve hoy a trabajar en la viña». Él le contestó: “No quiero”. Pero después se arrepintió y fue.",
+ r:"El primer hijo dice «no quiero», pero acaba yendo a la viña. ¡Cuántos alumnos empiezan diciendo que no y luego nos sorprenden! Don Bosco estaba convencido de que en cada joven hay un punto accesible al bien. Juzgar por la primera respuesta es cerrar la puerta antes de tiempo.",
+ q:"¿A quién he juzgado por su primer «no quiero»?",
+ a:"Recuerda la frase de Don Bosco: «Basta que seáis jóvenes para que os ame». Mira hoy a tu grupo más retador con esa mirada de esperanza."},
+{m:11,d:16,t:"cls",ref:"Lc 7,19-23",b:"lucas",ch:7,kr:"Lc 7,22",il:"gift",cat:"p",
+ k:"«Id y anunciad a Juan lo que habéis visto y oído: los ciegos ven, los cojos andan […], los pobres son evangelizados».",
+ r:"Jesús no responde con teorías, sino con hechos que se pueden ver y oír. En la recta final del trimestre, la fe se nota en gestos concretos: echar una mano a quien no llega con los informes también es anunciar el Evangelio, aunque sea sin palabras.",
+ q:"¿Qué podría ver y oír de Jesús un compañero que trabaja a mi lado?",
+ a:"Acércate a un compañero que veas desbordado con los informes del trimestre y pregúntale en qué puedes echarle una mano."},
+{m:11,d:17,t:"cls",ref:"Mt 1,1-17",b:"mateo",ch:1,kr:"Mt 1,16",il:"sheep",cat:"c",
+ k:"Y Jacob engendró a José, el esposo de María, de la cual nació Jesús, llamado Cristo.",
+ r:"La genealogía de Jesús está llena de nombres con historias difíciles. Dios entra en la historia a través de familias reales, con sus luces y sus sombras. Así llegan también nuestros alumnos a clase: cada uno con su historia familiar, que merece respeto y mucha paciencia.",
+ q:"¿Qué historia hay detrás del alumno que más me cuesta?",
+ a:"Aplica el Sistema Preventivo: cada niño trae su historia. Ante un momento de alboroto, acompaña con cercanía y dulzura en lugar de levantar la voz."},
+{m:11,d:18,t:"cls",ref:"Mt 1,18-24",b:"mateo",ch:1,kr:"Mt 1,24",il:"heart",cat:"p",
+ k:"Cuando José se despertó, hizo lo que le había mandado el ángel del Señor y acogió a su mujer.",
+ r:"José no lo entiende todo, pero acoge. Su grandeza está en la escucha silenciosa y en la confianza. Las familias de nuestros alumnos también necesitan sentirse acogidas, y no solo cuando surge un problema.",
+ q:"¿Qué familia necesita escuchar hoy algo bueno de mí?",
+ a:"Envía un mensaje breve a una familia para felicitarla por un avance o una buena actitud de su hijo o hija, sin que haya ningún problema de por medio."},
+{m:11,d:19,t:"sab",ref:"Lc 1,5-25",b:"lucas",ch:1,kr:"Lc 1,13",il:"nativity",cat:"c",
+ k:"«No temas, Zacarías, porque tu ruego ha sido escuchado: tu mujer Isabel te dará un hijo, y le pondrás por nombre Juan».",
+ r:"Zacarías había dejado de esperar, y Dios responde a una oración antigua. Ninguna oración por un alumno se pierde, aunque tarde en dar fruto. Montar el belén también es rezar con las manos: figura a figura, presentando a Dios nombres concretos.",
+ q:"¿Qué oración por mis alumnos he dejado de hacer porque creía que no servía?",
+ a:"Monta el belén en casa —o visita el de tu parroquia— y, al colocar cada figura, encomienda a uno de tus alumnos."},
+{m:11,d:20,t:"dom",w:4,ref:"Lc 1,26-38",b:"lucas",ch:1,kr:"Lc 1,37-38",il:"wreath",cat:"c",
+ k:"«Porque para Dios nada hay imposible». […] «He aquí la esclava del Señor; hágase en mí según tu palabra».",
+ r:"María pregunta, escucha y dice sí. Su «hágase» no es pasividad, sino disponibilidad total. En la última semana de clase, renovar el propio sí es seguir entregándose aunque falten fuerzas, porque para Dios nada hay imposible.",
+ q:"¿A qué me está pidiendo Dios que diga «sí» en esta etapa de mi vocación?",
+ a:"Con las cuatro velas encendidas, renueva ante María el «sí» de tu vocación y pon en manos de María Auxiliadora tu última semana con los alumnos."},
+{m:11,d:21,t:"cls",ref:"Lc 1,39-45",b:"lucas",ch:1,kr:"Lc 1,45",il:"angel",cat:"p",
+ k:"«Bienaventurada la que ha creído, porque lo que le ha dicho el Señor se cumplirá».",
+ r:"María se pone en camino para servir, y su visita llena de alegría a Isabel y al niño que lleva en su seno. La Navidad empieza con un encuentro que contagia alegría. Unos «Buenos Días» navideños pueden ser una pequeña Visitación en el aula.",
+ q:"¿Qué alegría llevo yo cuando entro en clase?",
+ a:"Dedica 10 minutos de tu clase a unos «Buenos Días» navideños participativos o a compartir un deseo de paz con tus alumnos."},
+{m:11,d:22,t:"ult",ref:"Lc 1,46-56",b:"lucas",ch:1,kr:"Lc 1,46-48",il:"tree",cat:"p",
+ k:"«Proclama mi alma la grandeza del Señor, se alegra mi espíritu en Dios, mi salvador; porque ha mirado la humildad de su esclava».",
+ r:"El Magníficat es un canto de gratitud que mira hacia atrás y descubre la mano de Dios. Al cerrar el trimestre, también nosotros podemos cantar nuestro propio Magníficat: por los compañeros, por los alumnos y por lo que Dios ha hecho a través de nuestra pequeñez.",
+ q:"¿Qué grandezas ha hecho Dios en mi clase este trimestre?",
+ a:"Último día de clase: deja en la sala de profesores una tarjeta navideña agradeciendo el trabajo compartido y, al salir, ordena tu mesa y cierra la agenda con gratitud."},
+{m:11,d:23,t:"vac",ref:"Lc 1,57-66",b:"lucas",ch:1,kr:"Lc 1,66",il:"holly",cat:"c",
+ k:"«Pues ¿qué será este niño?». Porque la mano del Señor estaba con él.",
+ r:"Los vecinos se preguntan qué será de Juan. Es la pregunta de todo educador: ¿qué será de este niño? No lo sabemos, pero sí sabemos que la mano del Señor está con él. Rezar por cada alumno es confiarlo a esa mano.",
+ q:"¿Qué sueño de Dios intuyo en alguno de mis alumnos?",
+ a:"Primer día de vacaciones: descansa sin culpa. Coge la lista de clase y reza un momento por cada alumno, nombre a nombre."},
+{m:11,d:24,t:"nb",ref:"Lc 1,67-79",b:"lucas",ch:1,kr:"Lc 1,78-79",il:"nativity",cat:"p",sub:"Misa de la mañana · por la noche, Misa del Gallo (Lc 2,1-14)",
+ k:"«Por la entrañable misericordia de nuestro Dios, nos visitará el sol que nace de lo alto, para iluminar a los que viven en tinieblas y en sombra de muerte, para guiar nuestros pasos por el camino de la paz».",
+ r:"Zacarías, que se había quedado mudo, rompe a cantar. Esta noche llega el sol que nace de lo alto. En la Misa del Gallo escucharemos el anuncio a los pastores: no temáis, os ha nacido un Salvador. Ninguna tiniebla es demasiado oscura para esa luz.",
+ q:"¿Qué tinieblas de mi vida y de la de mis alumnos quiero presentar esta noche al Niño?",
+ a:"Celebra la Nochebuena con alegría salesiana junto a los tuyos y pide al Niño Jesús y a María Auxiliadora por todos los jóvenes del colegio y sus familias."},
+{m:11,d:25,t:"nav",ref:"Jn 1,1-18",b:"juan",ch:1,kr:"Jn 1,14",il:"star",cat:"p",note:"¡Feliz Navidad!",sub:"Natividad del Señor · Misa del día",
+ k:"Y el Verbo se hizo carne y habitó entre nosotros, y hemos contemplado su gloria: gloria como del Unigénito del Padre, lleno de gracia y de verdad.",
+ r:"Dios no ha querido salvarnos desde lejos: ha puesto su tienda entre nosotros. La pedagogía de Dios es la presencia, y por eso Don Bosco quería a sus educadores siempre en medio de los jóvenes. La Navidad es el corazón del Sistema Preventivo: estar con ellos.",
+ q:"¿Dónde quiere poner Dios su tienda en mi vida este año?",
+ a:"Felicita la Navidad a tus compañeros del claustro con un mensaje personal, escrito por ti y no reenviado: que sea un pequeño «Dios con nosotros»."}
+];
+
+const N=D.length;
+const ROM=['','I','II','III','IV'];
+const WD=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MES=['','','','','','','','','','','noviembre','diciembre'];
+const dateOf=x=>new Date(2026,x.m,x.d);
+const wd=x=>WD[dateOf(x).getDay()];
+const CAT={c:'Corazón Salesiano',p:'Patio y Amorevolezza'};
+const TL={cls:'Día de clase',sab:'Sin clase · fin de semana',dom:'Domingo de Adviento',fes:'Festivo · traslado del Día de la Constitución',inm:'Festivo · Solemnidad',ult:'Último día lectivo del trimestre',vac:'Vacaciones de Navidad',nb:'Vacaciones de Navidad',nav:'Natividad del Señor'};
+const pill=x=>x.t==='dom'?`Domingo ${ROM[x.w]} de Adviento`:x.t==='sab'?'Sábado':x.t==='fes'?'Festivo':x.t==='inm'?'Inmaculada':x.t==='ult'?'Último día de clase':x.t==='vac'?'Vacaciones':x.t==='nb'?'Nochebuena':x.t==='nav'?'Navidad':(x.pl||'Día de clase');
+const ilOf=x=>svg(x.il,x.w);
+const link=x=>`https://www.conferenciaepiscopal.es/biblia/${x.b}/#cap${x.ch}`;
+const subOf=x=>x.t==='dom'?`Domingo ${ROM[x.w]} de Adviento · ciclo B`:`${wd(x)}${x.sub?' · '+x.sub:''}`;
+
+const PL=[
+ {n:"Nazaret",d:"Aldea de Galilea donde María recibió el anuncio del ángel. De aquí subió José con María, que estaba encinta, para empadronarse en Belén (Lc 2,4-5)."},
+ {n:"Valle de Jezreel",d:"La gran llanura fértil al sur de Galilea, con el monte Tabor al norte. Campos de trigo, olivos y caminos de paso."},
+ {n:"Escitópolis (Bet Seán)",d:"Ciudad de la Decápolis a la entrada del valle del Jordán. Para subir a Jerusalén, unos galileos cruzaban Samaria y otros bajaban por el Jordán."},
+ {n:"Valle del Jordán",d:"Uno de los lugares más bajos de la tierra, muy por debajo del nivel del mar. En estas orillas predicará Juan el Bautista."},
+ {n:"Jericó",d:"La «ciudad de las palmeras», un oasis donde Herodes tenía su palacio de invierno. Desde aquí empieza la dura subida a Jerusalén."},
+ {n:"Desierto de Judá",d:"Cerca de mil metros de subida por un camino pedregoso: el escenario de la parábola del buen samaritano (Lc 10,30)."},
+ {n:"Monte de los Olivos",d:"Desde su cima se contempla Jerusalén y el Templo. Belén ya está cerca."},
+ {n:"Jerusalén",d:"La ciudad santa, con el Templo reconstruido por Herodes. Belén queda a unos nueve kilómetros al sur."},
+ {n:"Belén",d:"La ciudad de David. No había sitio para ellos en la posada, y María acostó a su hijo en un pesebre (Lc 2,7)."}
+];
+const POF=[0,0,0,1,1,1,2,2,2,3,3,3,3,3,4,4,4,5,5,5,6,6,7,7,8,8,8];
+/* Hitos en el mapa (viewBox 600×1120, norte arriba) */
+const P=[[150,152],[196,174],[240,196],[284,218],[324,248],[358,284],[388,324],[408,368],[418,414],[414,460],[424,506],[416,552],[426,598],[418,644],[398,688],[368,722],[332,748],[292,770],[252,794],[216,822],[188,856],[166,892],[160,940],[178,984],[210,1016],[246,1044],[290,1064]];
+
+const KEY='adviento-donbosco-v2';
+let S={opened:[],done:[],test:false};
+try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)S={opened:r.opened||[],done:r.done||[],test:false}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+const $=id=>document.getElementById(id);
+const ov=$('ov'),map=$('map');
+let cur=0;
+const today=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())};
+const unlocked=i=>S.test||today()>=dateOf(D[i]);
+const isToday=i=>today().getTime()===dateOf(D[i]).getTime();
+const stateOf=i=>!unlocked(i)?'locked':S.done.includes(i)?'done':S.opened.includes(i)?'opened':'ready';
+const famStage=()=>{const t=today();let k=-1;D.forEach((x,i)=>{if(t>=dateOf(x))k=i});return k};
+const started=()=>today()>=dateOf(D[0]);
+
+function weekInfo(){
+  const t=today(),Y=2026;
+  const S1=new Date(Y,10,29),S2=new Date(Y,11,6),S3=new Date(Y,11,13),S4=new Date(Y,11,20),NV=new Date(Y,11,25),END=new Date(Y+1,0,11);
+  const G=['',['«Estad atentos, vigilad»','Mc 13,33'],['«Preparad el camino del Señor»','Mc 1,3'],['«Venía como testigo, para dar testimonio de la luz»','Jn 1,7'],['«Hágase en mí según tu palabra»','Lc 1,38']];
+  const w=t<S1?0:t<S2?1:t<S3?2:t<S4?3:t<NV?4:t<END?5:0;
+  if(w===0)return{lit:0,h:'El Adviento empieza el domingo 29 de noviembre',s:'«Estad atentos, vigilad» · Mc 13,33'};
+  if(w===5)return{lit:4,h:'¡Feliz Navidad!',s:'«El Verbo se hizo carne y habitó entre nosotros» · Jn 1,14'};
+  return{lit:w,h:`Semana ${ROM[w]} de Adviento`,s:`${G[w][0]} · ${G[w][1]}`};
+}
+
+/* ---------- Mapa ilustrado ---------- */
+const smooth=pts=>{let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=0;i<pts.length-1;i++){const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+  d+=` C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0]} ${p2[1]}`}return d};
+const rnd=(()=>{let s=1129;return()=>(s=(s*16807)%2147483647)/2147483647})();
+const mount=(x,y,s=1,c='#b8935e')=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-16 0L-3-20L3-14L8-20L18 0Z" fill="${c}" stroke="#6b4a26" stroke-width="1.4" stroke-linejoin="round"/><path d="M-3-20L-1 0M8-20L6 0" stroke="#6b4a26" stroke-width="1" opacity=".5"/><path d="M-3-20L-8-8L-5-9L-9 0" fill="#6b4a26" opacity=".18"/></g>`;
+const olive=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0V-7" stroke="#6b4a26" stroke-width="2"/><circle cx="0" cy="-11" r="6" fill="#7f8f55" stroke="#4f5a30" stroke-width="1"/></g>`;
+const palm=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0Q2-10 0-20" stroke="#6b4a26" stroke-width="2.2" fill="none"/><path d="M0-20Q-9-24-14-17M0-20Q-6-28-11-30M0-20Q6-28 12-29M0-20Q9-24 14-16M0-20Q1-28 2-31" stroke="#3f6b33" stroke-width="3" fill="none" stroke-linecap="round"/></g>`;
+const houses=(x,y,n,s=1)=>{let h='';for(let i=0;i<n;i++){const dx=((i*37)%5-2)*9,dy=Math.floor(i/3)*7-((i%3)*3),w=12+((i*13)%6),hh=9+((i*7)%5);h+=`<g transform="translate(${x+dx*s} ${y+dy*s}) scale(${s})"><rect x="${-w/2}" y="${-hh}" width="${w}" height="${hh}" fill="#ecdcb6" stroke="#6b4a26" stroke-width="1.2"/><rect x="${-w/2-1}" y="${-hh-2.5}" width="${w+2}" height="3" fill="#c9a979" stroke="#6b4a26" stroke-width="1"/><rect x="-2" y="${-hh/2}" width="3.5" height="${hh/2}" fill="#6b4a26"/></g>`}return h};
+const label=(x,y,t,size=21,anchor='middle')=>`<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="700" font-size="${size}" fill="#4a3018" stroke="#f3e6c8" stroke-width="5" paint-order="stroke">${t}</text>`;
+const region=(x,y,t,r=0)=>`<text x="${x}" y="${y}" transform="rotate(${r} ${x} ${y})" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="30" fill="#7a5a32" opacity=".42">${t}</text>`;
+
+function drawBase(){
+  let g='';
+  g+=`<defs>
+   <radialGradient id="parch" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#f6ecd2"/><stop offset=".7" stop-color="#ecdbb4"/><stop offset="1" stop-color="#c9a873"/></radialGradient>
+   <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .12  0 0 0 .09 0"/></filter>
+   <linearGradient id="sea" x1="0" x2="1"><stop offset="0" stop-color="#8fb3b8"/><stop offset="1" stop-color="#b7cfc9"/></linearGradient>
+   <radialGradient id="starG"><stop offset="0" stop-color="#fffbe8"/><stop offset=".3" stop-color="#f3dc91" stop-opacity=".9"/><stop offset="1" stop-color="#f3dc91" stop-opacity="0"/></radialGradient>
+   <radialGradient id="caveG"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+  </defs>`;
+  g+=`<rect width="600" height="1120" rx="14" fill="url(#parch)"/><rect width="600" height="1120" rx="14" filter="url(#grain)"/>`;
+  /* Mar Mediterráneo */
+  g+=`<path d="M0 0H44Q30 120 52 240Q70 360 46 480Q30 600 56 720Q74 860 48 980Q36 1060 40 1120H0Z" fill="url(#sea)" opacity=".85"/>`;
+  for(let y=60;y<1100;y+=70)g+=`<path d="M10 ${y}q6-5 12 0t12 0" stroke="#5f8790" stroke-width="1.4" fill="none" opacity=".6"/>`;
+  g+=`<text x="24" y="560" transform="rotate(-90 24 560)" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="22" fill="#3f6670">Mar Grande (Mediterráneo)</text>`;
+  /* Lago de Genesaret, Jordán y Mar Muerto */
+  g+=`<ellipse cx="478" cy="140" rx="30" ry="50" fill="url(#sea)" stroke="#5f8790" stroke-width="1.5"/>`;
+  g+=`<path d="M476 190 Q492 240 478 290 T488 390 T474 490 T490 590 T478 690 T492 790" stroke="#6f9aa3" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  g+=`<path d="M478 790 Q520 800 528 880 Q536 980 514 1060 Q498 1090 482 1050 Q470 980 474 900 Q472 820 478 790Z" fill="url(#sea)" stroke="#5f8790" stroke-width="1.5"/>`;
+  g+=label(478,82,'Lago de Genesaret',17)+`<text x="506" y="930" transform="rotate(-84 506 930)" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="17" fill="#3f6670">Mar Muerto</text>`;
+  g+=`<text x="504" y="470" transform="rotate(84 504 470)" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-size="17" fill="#3f6670">río Jordán</text>`;
+  /* Regiones */
+  g+=region(108,250,'Galilea',-8)+region(210,520,'Samaria',-6)+region(118,800,'Judea',-8)+region(560,330,'Decápolis',90)+region(560,680,'Perea',90);
+  /* Montes y vegetación */
+  [[90,120,1],[118,96,.8],[250,96,.9],[78,190,.9],[300,140,1.9,'#a8834f'],[140,380,1],[176,410,.9],[110,440,1.1],[250,430,.9],[300,470,1],[140,560,1],[200,600,1.1],[270,580,.9],[110,640,1],[160,690,.9],[96,860,1],[120,900,.9],[230,920,.9],[96,1000,1],[340,880,.8,'#c9a26a'],[380,860,.9,'#c9a26a'],[330,960,.8,'#c9a26a']].forEach(m=>g+=mount(...m));
+  g+=label(300,104,'Monte Tabor',16);
+  for(let k=0;k<26;k++){const x=230+rnd()*160,y=190+rnd()*110;if(Math.abs(y-(196+(x-240)*.6))<22)continue;g+=olive(x,y,.9)}
+  for(let k=0;k<14;k++){const x=80+rnd()*120,y=150+rnd()*90;g+=olive(x,y,.8)}
+  for(let k=0;k<14;k++){const x=100+rnd()*110,y=900+rnd()*130;if(Math.hypot(x-178,y-984)<30)continue;g+=olive(x,y,.8)}
+  /* Desierto de Judá: punteado */
+  for(let k=0;k<160;k++){const x=250+rnd()*190,y=760+rnd()*230;if(x>470)continue;g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.8+rnd()*1.1).toFixed(1)}" fill="#a07a44" opacity=".45"/>`}
+  g+=label(370,830,'Desierto de Judá',16)+label(262,312,'Valle de Jezreel',15)+`<text x="380" y="560" transform="rotate(-90 380 560)" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="700" font-size="15" fill="#4a3018" stroke="#f3e6c8" stroke-width="5" paint-order="stroke">Valle del Jordán</text>`;
+  /* Pueblos */
+  g+=houses(110,108,6,1)+label(108,80,'Nazaret',22);
+  g+=houses(478,330,7,1)+`<path d="M462 346a18 10 0 0 1 36 0" fill="none" stroke="#6b4a26" stroke-width="2"/>`+label(478,302,'Escitópolis',18);
+  [[452,700],[468,724],[446,736],[478,748],[460,760],[490,712]].forEach(p=>g+=palm(...p));
+  g+=houses(472,778,5,.9)+label(470,800,'Jericó',20);
+  /* Jerusalén: murallas y Templo */
+  g+=`<g transform="translate(92 946)"><rect x="-44" y="-38" width="88" height="70" fill="#ecdcb6" stroke="#6b4a26" stroke-width="2.4"/>`;
+  for(let x=-44;x<44;x+=8)g+=`<rect x="${x}" y="-43" width="4.5" height="6" fill="#ecdcb6" stroke="#6b4a26" stroke-width="1.2"/>`;
+  g+=`<rect x="6" y="-30" width="32" height="24" fill="#d9c49a" stroke="#6b4a26" stroke-width="1.4"/><rect x="14" y="-44" width="16" height="22" fill="#fbf4e0" stroke="#6b4a26" stroke-width="1.4"/><rect x="13" y="-47" width="18" height="4" fill="#d4af37" stroke="#8a6a1a"/>`+houses(-20,-6,5,.75)+houses(-18,22,3,.7)+`</g>`;
+  g+=label(92,890,'Jerusalén',22)+label(262,866,'Monte de los Olivos',14);
+  /* Belén, cueva y estrella */
+  g+=houses(150,1072,7,.95)+label(140,1100,'Belén',24);
+  g+=`<circle cx="330" cy="1066" r="40" fill="url(#caveG)" opacity=".8"/><path d="M302 1080Q300 1040 330 1036Q362 1040 360 1080Z" fill="#a8885e" stroke="#6b4a26" stroke-width="1.6"/><path d="M318 1080Q318 1058 330 1056Q343 1058 342 1080Z" fill="#3a2410"/><circle cx="330" cy="1072" r="6" fill="#ffd27a"/>`;
+  g+=`<g transform="translate(330 975)"><circle r="46" fill="url(#starG)"/><path d="M0-34L5-6L34 0L5 6L0 34L-5 6L-34 0L-5-6Z" fill="#fffbe8" stroke="#d4af37" stroke-width="1.2"/><path d="M0 34L0 54" stroke="#f3dc91" stroke-width="2" opacity=".8" stroke-dasharray="3 4"/></g>`;
+  /* Rosa de los vientos */
+  g+=`<g transform="translate(546 1046)"><circle r="26" fill="#f3e6c8" stroke="#6b4a26" stroke-width="1.2"/><path d="M0-22L5 0L0 22L-5 0Z" fill="#6b4a26"/><path d="M-22 0L0-4L22 0L0 4Z" fill="#a88a5a"/><text y="-28" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="13" fill="#4a3018">N</text></g>`;
+  /* Camino */
+  g+=`<path d="${smooth(P)}" fill="none" stroke="#f3e6c8" stroke-width="10" stroke-linecap="round" opacity=".9"/><path id="routeAll" d="${smooth(P)}" fill="none" stroke="#8a6a3a" stroke-width="3.4" stroke-dasharray="2 9" stroke-linecap="round"/><path id="routeDone" fill="none" stroke="#7a2021" stroke-width="4.5" stroke-linecap="round"/>`;
+  g+=placesLayer()+`<g id="stops"></g><g id="famLayer"></g>`;
+  map.innerHTML=g;
+}
+
+/* Lugares tocables: [clave, nombre, tipo, elipse de toque, botón i, etapa del camino] */
+const PLACES=[
+ ['naz','Nazaret','Aldea de Galilea',[108,100,50,34],[160,74],0],
+ ['tab','Monte Tabor','Monte',[300,118,42,28],[358,98],-1],
+ ['jez','Valle de Jezreel','Llanura',[262,306,62,15],[332,306],1],
+ ['esc','Escitópolis (Bet Seán)','Ciudad de la Decápolis',[478,318,44,32],[540,296],2],
+ ['gen','Lago de Genesaret','Lago',[478,118,40,72],[564,76],-1],
+ ['jor','Río Jordán','Río',[502,470,16,62],[512,400],-1],
+ ['vjo','Valle del Jordán','Valle',[380,560,13,64],[380,484],3],
+ ['jer','Jericó','Ciudad',[466,762,40,44],[512,794],4],
+ ['des','Desierto de Judá','Desierto',[370,826,66,14],[444,822],5],
+ ['oli','Monte de los Olivos','Monte',[262,862,68,12],[338,858],6],
+ ['jrs','Jerusalén','Ciudad santa',[92,930,58,56],[150,884],7],
+ ['bel','Belén','Ciudad de David',[150,1082,52,30],[184,1094],8],
+ ['mue','Mar Muerto','Mar',[504,930,30,124],[540,826],-1],
+ ['med','Mar Grande (Mediterráneo)','Mar',[24,560,22,210],[24,426],-1],
+ ['gal','Galilea','Región',[108,242,62,20],[164,234],-1],
+ ['sam','Samaria','Región',[210,512,66,20],[272,504],-1],
+ ['jud','Judea','Región',[118,792,52,20],[166,784],-1],
+ ['dec','Decápolis','Región',[560,330,15,72],[560,252],-1],
+ ['per','Perea','Región',[560,680,15,52],[560,620],-1]
+];
+const PLC={
+ naz:{b:[['La Anunciación: el ángel Gabriel es enviado a María, en Nazaret.','Lc 1,26-38'],['Jesús crece en Nazaret «en sabiduría, en estatura y en gracia».','Lc 2,39-40.51-52'],['Natanael duda: «¿De Nazaret puede salir algo bueno?».','Jn 1,46'],['Jesús lee al profeta Isaías en su sinagoga y es rechazado por los suyos.','Lc 4,16-30']],
+  h:'Una aldea pequeña, de pocos cientos de habitantes, con casas en parte excavadas en la roca y vida de campesinos y artesanos. A unos seis kilómetros estaba Séforis, la capital de Galilea, que Herodes Antipas reconstruyó en tiempos de la infancia de Jesús.'},
+ tab:{b:[['Débora y Barac reúnen al ejército de Israel en el monte Tabor.','Jue 4,6-14'],['Los evangelios hablan de un «monte alto» para la Transfiguración; la tradición cristiana lo identifica con el Tabor desde el siglo IV.','Mt 17,1-8']],
+  h:'Monte redondeado de unos 575 metros que se alza solo en medio de la llanura, visible desde muy lejos. El historiador Flavio Josefo lo fortificó durante la guerra judía contra Roma (año 66).'},
+ jez:{b:[['Gedeón vence a los madianitas acampados en la llanura.','Jue 6,33; 7'],['El rey Saúl muere en el cercano monte Gelboé.','1 Sam 31'],['La viña de Nabot, en Jezreel, codiciada por el rey Ajab.','1 Re 21'],['Meguido, a la entrada del valle, da nombre al Armagedón del Apocalipsis.','Ap 16,16']],
+  h:'La llanura más fértil del país, también llamada Esdrelón. La cruzaba la gran ruta comercial entre Egipto y Mesopotamia. En tiempos de Jesús había en ella grandes fincas de trigo trabajadas por jornaleros.'},
+ esc:{b:[['Los filisteos cuelgan los cuerpos de Saúl y sus hijos en la muralla de Bet Seán.','1 Sam 31,10-12'],['Gente de la Decápolis sigue a Jesús.','Mt 4,25']],
+  h:'La antigua Bet Seán, rebautizada por los griegos como Escitópolis. Era la única ciudad de la Decápolis al oeste del Jordán: una ciudad de cultura griega y mayoría pagana, con templos y calles de columnas. Para subir a Jerusalén, unos galileos cruzaban Samaria y otros bajaban por el valle del Jordán.'},
+ gen:{b:[['Jesús llama a Simón, Andrés, Santiago y Juan mientras echan las redes.','Mc 1,16-20'],['Jesús calma la tempestad.','Mc 4,35-41'],['Jesús camina sobre las aguas.','Mt 14,22-33'],['Cafarnaún, en su orilla, fue el centro de la predicación de Jesús.','Mt 4,13']],
+  h:'También llamado mar de Galilea o de Tiberíades: un lago de agua dulce de unos 21 kilómetros de largo, a más de 200 metros bajo el nivel del mar. La pesca era su gran riqueza; en Magdala se salaba el pescado para venderlo.'},
+ jor:{b:[['El pueblo de Israel cruza el Jordán con Josué para entrar en la tierra prometida.','Jos 3'],['Naamán el sirio queda limpio de la lepra al bañarse en él.','2 Re 5'],['Juan bautiza en el Jordán, y allí es bautizado Jesús.','Mc 1,4-11']],
+  h:'Nace al pie del monte Hermón, atraviesa el lago de Genesaret y muere en el mar Muerto. Su cauce serpentea tanto que recorre más del doble de la distancia en línea recta. Era frontera natural y tenía vados conocidos para cruzarlo.'},
+ vjo:{b:[['Lot elige para sí la llanura del Jordán, «regada como un jardín».','Gn 13,10-11'],['Elías es arrebatado al cielo junto al Jordán, ante Eliseo.','2 Re 2,1-14']],
+  h:'Forma parte de una gran fosa de la corteza terrestre y es uno de los lugares más bajos del planeta. Clima cálido incluso en invierno. Era una de las rutas de los peregrinos galileos que subían a Jerusalén para las fiestas.'},
+ jer:{b:[['Caen las murallas de Jericó ante el pueblo de Israel.','Jos 6'],['Eliseo sanea las aguas del manantial.','2 Re 2,19-22'],['Jesús cura al ciego Bartimeo.','Mc 10,46-52'],['Zaqueo sube a un sicómoro para ver a Jesús.','Lc 19,1-10']],
+  h:'Una de las ciudades más antiguas del mundo, a unos 250 metros bajo el nivel del mar. Oasis de palmeras y bálsamo, la «ciudad de las palmeras». Herodes el Grande tenía allí su palacio de invierno, y allí murió poco después del nacimiento de Jesús.'},
+ des:{b:[['David se esconde de Saúl en las cuevas de En Guedí.','1 Sam 24'],['Juan el Bautista predica en el desierto de Judea.','Mt 3,1-3'],['Jesús es tentado en el desierto durante cuarenta días.','Mt 4,1-11'],['El buen samaritano socorre a un herido en el camino de Jerusalén a Jericó.','Lc 10,30-37']],
+  h:'Tierra seca y pedregosa entre Jerusalén y el mar Muerto. El camino de Jericó a Jerusalén sube cerca de mil metros en menos de treinta kilómetros y tenía fama de peligroso por los bandidos. En este desierto vivía la comunidad de Qumrán, la de los manuscritos del mar Muerto.'},
+ oli:{b:[['David sube llorando el monte de los Olivos al huir de su hijo Absalón.','2 Sam 15,30'],['Jesús entra en Jerusalén desde Betfagé y llora sobre la ciudad.','Lc 19,29-44'],['Jesús ora en Getsemaní, al pie del monte.','Mt 26,36-46'],['Desde aquí los discípulos vuelven a Jerusalén tras la Ascensión.','Hch 1,12']],
+  h:'Colina al este de Jerusalén, separada de la ciudad por el valle del Cedrón y cubierta de olivares, de donde viene su nombre. Quien llegaba desde Jericó veía desde su cima, de golpe, la ciudad y el Templo.'},
+ jrs:{b:[['David conquista la ciudad y la hace su capital.','2 Sam 5,6-10'],['Salomón construye el primer Templo.','1 Re 6'],['María y José presentan a Jesús en el Templo; Simeón y Ana lo reconocen.','Lc 2,22-38'],['Jesús, a los doce años, se queda en el Templo.','Lc 2,41-52'],['Allí vive Jesús su pasión, muerte y resurrección.','Lc 22–24']],
+  h:'Herodes el Grande empezó hacia el año 20 a.C. a ampliar el Templo, uno de los mayores santuarios del mundo romano. En las fiestas la ciudad se llenaba de peregrinos. Los romanos la destruyeron, con el Templo, en el año 70.'},
+ bel:{b:[['Raquel muere y es enterrada en el camino de Belén.','Gn 35,19'],['Allí viven Rut y Booz, bisabuelos del rey David.','Rut 1–4'],['Samuel unge en Belén al joven David.','1 Sam 16,1-13'],['El profeta Miqueas anuncia que de Belén saldrá el jefe de Israel.','Miq 5,1'],['Nace Jesús y los pastores reciben el anuncio de los ángeles.','Lc 2,1-20']],
+  h:'Pequeña aldea a unos nueve kilómetros al sur de Jerusalén; su nombre significa «casa del pan». Ya en el siglo II, san Justino recoge la tradición de que Jesús nació en una cueva. Sobre ella el emperador Constantino levantó en el siglo IV la basílica de la Natividad.'},
+ mue:{b:[['La Biblia lo llama «mar de la Sal».','Gn 14,3'],['Junto a él se sitúa la destrucción de Sodoma y Gomorra.','Gn 19'],['Ezequiel ve un río que sale del Templo y sanea sus aguas.','Ez 47,8-9']],
+  h:'Es el punto más bajo de la tierra firme, a más de 400 metros bajo el nivel del mar. Su agua es casi diez veces más salada que la del océano y en ella no hay peces. En su orilla levantó Herodes la fortaleza de Masada.'},
+ med:{b:[['La Biblia lo llama «el Mar Grande», límite occidental de la tierra prometida.','Nm 34,6; Jos 1,4'],['Jonás se embarca en Jafa huyendo del Señor.','Jon 1,3'],['En Jope, Pedro tiene la visión que le abre a los paganos.','Hch 10']],
+  h:'Los judíos no eran un pueblo marinero, y la costa estaba en manos de ciudades de cultura griega. Herodes el Grande construyó allí el gran puerto de Cesarea Marítima, donde residía el gobernador romano.'},
+ gal:{b:[['Isaías la llama «Galilea de los gentiles»; Mateo ve en ella el cumplimiento de la profecía.','Is 8,23; Mt 4,15-16'],['Es el escenario de la mayor parte de la vida pública de Jesús.','Mc 1,14-15'],['A Pedro lo delata su acento galileo.','Mt 26,73']],
+  h:'Región del norte, fértil y poblada de aldeas. Cuando nació Jesús la gobernaba Herodes el Grande; después, su hijo Herodes Antipas. Los judíos de Jerusalén miraban a los galileos con cierto desprecio por su mezcla con los paganos.'},
+ sam:{b:[['El rey Omrí funda Samaria como capital del reino del Norte.','1 Re 16,24'],['Jesús habla con la samaritana junto al pozo de Jacob: «los judíos no se tratan con los samaritanos».','Jn 4,1-42'],['La parábola del buen samaritano.','Lc 10,30-37'],['El diácono Felipe anuncia allí el Evangelio.','Hch 8,4-8']],
+  h:'Región central habitada por los samaritanos, enfrentados con los judíos desde siglos atrás. Tenían su propio templo en el monte Garizín, destruido por los judíos hacia el año 110 a.C. Según Flavio Josefo, muchos galileos cruzaban Samaria para ir a Jerusalén, no siempre sin conflictos.'},
+ jud:{b:[['Territorio de la tribu de Judá, la del rey David.','Jos 15'],['«Jesús nació en Belén de Judea en tiempos del rey Herodes».','Mt 2,1'],['Lucas sitúa el viaje a Belén con ocasión de un censo romano.','Lc 2,1-5']],
+  h:'Región del sur, con Jerusalén y Belén. Al nacer Jesús la gobernaba Herodes el Grande, rey vasallo de Roma. Desde el año 6 pasó a ser gobernada directamente por un prefecto romano; Poncio Pilato lo fue entre los años 26 y 36.'},
+ dec:{b:[['Multitudes de la Decápolis siguen a Jesús.','Mt 4,25'],['El endemoniado de Gerasa, ya curado, anuncia en la Decápolis lo que Jesús ha hecho con él.','Mc 5,1-20'],['Jesús cura a un sordomudo en territorio de la Decápolis.','Mc 7,31-37']],
+  h:'Un grupo de unas diez ciudades de lengua y cultura griega, casi todas al este del Jordán, como Gerasa, Gadara o Hipos. Tenían cierta autonomía bajo Roma y eran mayoritariamente paganas.'},
+ per:{b:[['Jesús enseña «al otro lado del Jordán».','Mt 19,1; Mc 10,1'],['Juan bautizaba en Betania, al otro lado del Jordán.','Jn 1,28'],['Herodes Antipas encarcela y manda decapitar a Juan el Bautista.','Mt 14,3-12']],
+  h:'Territorio al este del Jordán, gobernado junto con Galilea por Herodes Antipas. Según Flavio Josefo, Juan el Bautista fue encarcelado y ejecutado en la fortaleza de Maqueronte, en Perea.'}
+};
+function placesLayer(){
+  return '<g id="places">'+PLACES.map(([k,n,t,[cx,cy,rx,ry],[bx,by]])=>`<g class="place" data-p="${k}" role="button" tabindex="0" aria-label="${n}: ver explicación"><ellipse class="phit" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/><g class="badge" transform="translate(${bx} ${by})"><circle r="8.5" fill="#d4af37" stroke="#6b4a26" stroke-width="1.4"/><text y="4" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="700" font-size="13" fill="#102a20">i</text></g></g>`).join('')+'</g>';
+}
+
+/* María en el burro y José, en dibujo */
+const FAM=`<g class="bob"><ellipse cx="0" cy="30" rx="30" ry="5" fill="#000" opacity=".18"/>
+<path d="M-18 26V12M-10 26V13M10 26V13M17 26V12" stroke="#5e544a" stroke-width="3.4" stroke-linecap="round"/>
+<ellipse cx="0" cy="8" rx="21" ry="10" fill="#8d7f6d" stroke="#4a3f33" stroke-width="1.4"/>
+<path d="M17 4Q24-4 28-2L34 6Q36 11 31 12L24 9Q21 9 18 10Z" fill="#8d7f6d" stroke="#4a3f33" stroke-width="1.4"/>
+<path d="M26-2L24-11L29-3M29-2L30-10L32-2" fill="#8d7f6d" stroke="#4a3f33" stroke-width="1.2"/><circle cx="30" cy="3" r="1.2" fill="#2a2018"/>
+<path d="M-21 6Q-28 10-26 18" stroke="#4a3f33" stroke-width="2" fill="none"/>
+<rect x="-12" y="-2" width="22" height="7" rx="2" fill="#9b2d2d" stroke="#5e1a1a" stroke-width="1"/>
+<path d="M-8 2Q-9-20 0-24Q9-20 8 2Z" fill="#34558f" stroke="#1f3560" stroke-width="1.3"/>
+<ellipse cx="1" cy="-6" rx="5" ry="5" fill="#e6dcc6" stroke="#1f3560" stroke-width=".8"/>
+<circle cx="0" cy="-28" r="5.5" fill="#d8a67c"/><path d="M-7-26Q-7-37 0-37Q7-37 7-26L6-18Q0-22-6-18Z" fill="#eef2f8" stroke="#9aa6b8" stroke-width="1"/>
+<g transform="translate(46 0)"><path d="M-7 28Q-8 6-6-6L6-6Q8 6 7 28Z" fill="#8a6a45" stroke="#4a3426" stroke-width="1.3"/><path d="M-8-4Q0-10 8-4L6 8Q0 4-6 8Z" fill="#6b4f35"/><circle cx="0" cy="-12" r="5.5" fill="#d8a67c"/><path d="M-3-9Q0-4 3-9" stroke="#4a3426" stroke-width="2.6" fill="none"/><path d="M-6.5-12Q-7-20 0-20Q7-20 6.5-12L5-14Q0-17-5-14Z" fill="#d8c7a0" stroke="#8a7550" stroke-width=".8"/><path d="M9-18L11 30" stroke="#5a3e28" stroke-width="2.4" stroke-linecap="round"/><path d="M-5 0Q-14 6-14 6" stroke="#6b5a40" stroke-width="1.2" fill="none"/></g>
+<path d="M33 8Q38 6 40 2" stroke="#6b5a40" stroke-width="1.2" fill="none"/></g>`;
+
+/* Color por tipo de día (litúrgico); el estado se marca con el borde y la estrella */
+const KIND={norm:{f:'#f6ecd2',s:'#6b4a26',t:'#4a3018'},adv:{f:'#5b3a78',s:'#3a2350',t:'#f3dc91'},gau:{f:'#e39bb5',s:'#9c4f6e',t:'#4a1f33'},inm:{f:'#9ccbea',s:'#3f6f99',t:'#102a40'},nav:{f:'#fffdf5',s:'#d4af37',t:'#7a5a12'}};
+const kindOf=x=>x.t==='dom'?(x.w===3?'gau':'adv'):x.t==='inm'?'inm':(x.t==='nb'||x.t==='nav')?'nav':'norm';
+function drawStops(){
+  let g='';
+  const order=[...D.keys()].sort((a,b)=>(isToday(a)?1:0)-(isToday(b)?1:0));
+  order.forEach(i=>{const x=D[i],[cx,cy]=P[i],st=stateOf(i),kd=kindOf(x),c=KIND[kd],spc=kd!=='norm',td=isToday(i),r=td?34:spc?22:19,noclass=kd==='norm'&&x.t!=='cls'&&x.t!=='ult',lk=st==='locked';
+    const aria=`${wd(x)} ${x.d} de ${MES[x.m]}, ${PL[POF[i]].n}, ${pill(x)}, ${st==='locked'?'bloqueada':st==='done'?'acción realizada':st==='opened'?'abierta':'lista para abrir'}`;
+    g+=`<g class="stop" data-i="${i}" tabindex="0" role="button" aria-label="${aria}" transform="translate(${cx} ${cy})">`;
+    if(td)g+=`<circle r="${r+18}" fill="#f3dc91" class="pulse"/><circle r="${r+7}" fill="none" stroke="#7a2021" stroke-width="2.5" stroke-dasharray="5 4" class="spin"/>`;
+    if(i===N-1)g+=`<path d="M0-${r+12}L6-${r-2}L${r+12} 0L6 ${r-2}L0 ${r+12}L-6 ${r-2}L-${r+12} 0L-6-${r-2}Z" fill="#f3dc91" stroke="#a8861f" stroke-width="1"/>`;
+    g+=`<circle r="${r}" class="ring" fill="${c.f}" fill-opacity="${lk&&spc?.6:1}" stroke="${c.s}" stroke-width="${kd==='nav'?3.4:lk?1.8:2.8}" ${lk?'stroke-dasharray="4 3"':''}/>`;
+    if(noclass)g+=`<circle r="${r-4.5}" fill="none" stroke="${c.t}" stroke-width=".9" opacity=".55"/>`;
+    g+=`<text class="lab" opacity="${lk?.75:1}" y="${x.m===10||td?-4:0}" fill="${c.t}" ${td?'font-size="30"':''}>${x.d}</text>${x.m===10||td?`<text class="mon" y="${td?17:12}" fill="${c.t}" ${td?'font-size="12"':''}>${x.m===10?'nov':'dic'}</text>`:''}`;
+    if(st==='ready')g+=`<circle cx="${-r+4}" cy="${-r+4}" r="5.5" fill="#d4af37" stroke="#6b4a26" stroke-width="1.2"/>`;
+    if(st==='done')g+=`<path transform="translate(${r-3} -${r-3}) scale(1.15)" d="M0-9L2.6-3 9-2.8 4-1 5.6 7 0 3.4-5.6 7-4-1-9-2.8-2.6-3Z" fill="#f3dc91" stroke="#7a5a12" stroke-width="1"/>`;
+    if(td)g+=`<g transform="translate(0 ${-r-20})"><rect x="-24" y="-12" width="48" height="22" rx="11" fill="#7a2021" stroke="#f3dc91" stroke-width="1.5"/><text y="3.5" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="14" fill="#f3dc91">Hoy</text></g>`;
+    g+=`<circle r="${Math.max(28,r+6)}" class="hit"/></g>`});
+  $('stops').innerHTML=g;
+  /* tramo recorrido */
+  const k=S.test?-1:famStage();
+  $('routeDone').setAttribute('d',k>0?smooth(P.slice(0,k+1)):'');
+  placeFamily();
+}
+let famShown=false;
+function placeFamily(){
+  const k=famStage();let x,y;
+  if(k<0){x=74;y=166}else{const [px,py]=P[k];x=px>300?px-80:px+44;y=py-14;if(k===N-1){x=262;y=1010}}
+  x=Math.min(540,Math.max(56,x));
+  const L=$('famLayer');
+  if(!famShown){L.innerHTML=`<g class="fam" id="fam" style="transform:translate(${x}px,${y}px)"><g transform="scale(.9)">${FAM}</g></g>`;famShown=true}
+  else $('fam').style.transform=`translate(${x}px,${y}px)`;
+}
+
+function renderSide(){
+  const n=S.done.length;
+  $('pt').textContent=`${n} / ${N} completadas`;$('pf').style.width=(n/N*100)+'%';$('pb').setAttribute('aria-valuenow',n);
+  $('mn').textContent=`${n}/${N} ⭐`;$('mf').style.width=(n/N*100)+'%';
+  const W=weekInfo();$('wreath').innerHTML=svg('wreath',W.lit);
+  $('wk').innerHTML='';const b=document.createElement('b');b.textContent=W.h;const s=document.createElement('span');s.textContent=W.s;$('wk').append(b,s);
+  const k=famStage(),tc=$('todayCard');tc.innerHTML='';
+  const h=document.createElement('h2'),p=document.createElement('p');
+  if(k<0){h.textContent='María y José se preparan en Nazaret';p.textContent='El camino empieza el domingo 29 de noviembre, primer domingo de Adviento. Mientras tanto, puedes explorar el mapa.'}
+  else{const x=D[k],pl=PL[POF[k]];h.textContent=k===N-1&&today()>=dateOf(x)?'¡Han llegado a Belén!':`Hoy caminan por: ${pl.n}`;p.textContent=pl.d}
+  tc.append(h,p);const hint=document.createElement('p');hint.style.cssText='margin-top:10px;font-size:13.5px;color:var(--gold2)';hint.textContent='Toca los nombres con ⓘ del mapa para conocer cada lugar en la Biblia y en la historia.';tc.append(hint);
+  const open=k>=0&&isToday(k)?k:-1;
+  if(open>=0){const g=document.createElement('button');g.className='go';g.type='button';g.textContent=stateOf(open)==='done'?'Volver a la etapa de hoy ⭐':'Abrir la etapa de hoy';g.onclick=()=>openDay(open);tc.append(g)}
+}
+function render(){renderSide();drawStops()}
+
+let tt;
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2800)}
+
+function fillModal(){
+  const x=D[cur],dn=S.done.includes(cur);
+  $('mil').innerHTML=ilOf(x);
+  $('mt').textContent=`${x.d} de ${MES[x.m]}`;
+  $('ms').textContent=subOf(x);
+  $('mpl').textContent=`Etapa ${cur+1}: ${PL[POF[cur]].n}`;
+  $('mdt').textContent=TL[x.t];
+  $('mref').textContent=x.ref;
+  $('mv').textContent=x.k;
+  $('mr').textContent=x.kr+' · Biblia CEE';
+  const L=$('mlink');L.href=link(x);L.textContent=`Leer ${x.ref} completo ↗`;
+  $('mrf').textContent=x.r;$('mq').textContent=x.q;
+  const ch=$('mc');ch.className='chip '+x.cat;ch.textContent=CAT[x.cat];
+  $('ma').textContent=x.a;
+  const b=$('bok');b.classList.toggle('is',dn);
+  b.textContent=dn?'⭐ Acción realizada · Pulsa para desmarcar':'✓ Marcar acción como realizada';
+}
+let lastFocus=null;
+function openDay(i){
+  cur=i;lastFocus=document.activeElement;
+  if(!S.opened.includes(i)){S.opened.push(i);save();render()}
+  fillModal();ov.classList.add('on');ov.setAttribute('aria-hidden','false');$('mx').focus();
+}
+function closeModal(){ov.classList.remove('on');ov.setAttribute('aria-hidden','true');(map.querySelector(`.stop[data-i="${cur}"]`)||lastFocus)?.focus?.()}
+function tryOpen(i){
+  if(unlocked(i))return openDay(i);
+  const el=map.querySelector(`.stop[data-i="${i}"] .ring`);
+  if(el){el.classList.remove('shake');void el.getBBox();el.classList.add('shake');el.addEventListener('animationend',()=>el.classList.remove('shake'),{once:true})}
+  toast(`¡Aún no es momento! Podrás abrir esta etapa el ${D[i].d} de ${MES[D[i].m]}.`);
+}
+const ovp=$('ovp');let pFocus=null;
+function openPlace(k){
+  const pl=PLACES.find(p=>p[0]===k),c=PLC[k];pFocus=document.activeElement;
+  $('pname').textContent=pl[1];$('pkind').textContent=pl[2];
+  const ul=$('pbib');ul.innerHTML='';c.b.forEach(([t,r])=>{const li=document.createElement('li');li.textContent=t;const ci=document.createElement('cite');ci.textContent=r;li.append(ci);ul.append(li)});
+  $('phis').textContent=c.h;
+  const sg=$('pstg');sg.innerHTML='';
+  if(pl[5]>=0){const h=document.createElement('h3');h.textContent='Etapas de Adviento en este lugar';const w=document.createElement('div');w.className='stg';
+    D.forEach((x,i)=>{if(POF[i]!==pl[5])return;const b=document.createElement('button');b.type='button';b.textContent=`${x.d} ${x.m===10?'nov':'dic'}${stateOf(i)==='done'?' ⭐':''}`;if(!unlocked(i))b.className='lk';b.onclick=()=>{closePlace(true);tryOpen(i)};w.append(b)});sg.append(h,w)}
+  ovp.classList.add('on');ovp.setAttribute('aria-hidden','false');$('px').focus();
+}
+function closePlace(silent){ovp.classList.remove('on');ovp.setAttribute('aria-hidden','true');if(!silent)pFocus?.focus?.()}
+$('px').onclick=()=>closePlace();
+ovp.addEventListener('click',e=>{if(e.target===ovp)closePlace()});
+map.addEventListener('click',e=>{const g=e.target.closest('.stop');if(g)return tryOpen(+g.dataset.i);const q=e.target.closest('.place');if(q)openPlace(q.dataset.p)});
+map.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const g=e.target.closest('.stop'),q=e.target.closest('.place');if(g){e.preventDefault();tryOpen(+g.dataset.i)}else if(q){e.preventDefault();openPlace(q.dataset.p)}});
+$('mx').onclick=closeModal;
+ov.addEventListener('click',e=>{if(e.target===ov)closeModal()});
+document.addEventListener('keydown',e=>{
+  if(ovp.classList.contains('on')){if(e.key==='Escape')closePlace();if(e.key==='Tab'){const f=[...$('pmodal').querySelectorAll('button')];const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}return}
+  if(!ov.classList.contains('on'))return;
+  if(e.key==='Escape')closeModal();
+  if(e.key==='Tab'){const f=[...$('modal').querySelectorAll('button,a[href]')];const a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+$('bok').onclick=()=>{
+  const i=S.done.indexOf(cur);
+  if(i<0){S.done.push(cur);toast(S.done.length===N?'¡Has completado todo el camino! Feliz Navidad ⭐':'¡Acción realizada! Un paso más hacia Belén ⭐')}
+  else S.done.splice(i,1);
+  save();render();fillModal();
+};
+$('bsh').onclick=async()=>{
+  const x=D[cur];
+  const head=x.t==='dom'?`Domingo ${ROM[x.w]} de Adviento`:`${wd(x)} ${x.d} de ${MES[x.m]}`;
+  const txt=`🌟 *Con Don Bosco hacia Belén* · ${head}\n📍 Etapa ${cur+1}: ${PL[POF[cur]].n}\n\n📖 *Evangelio (${x.ref})*\n_${x.k}_ (${x.kr})\n\n🕯️ ${x.r}\n❓ _${x.q}_\n\n✨ *${CAT[x.cat]}:* ${x.a}\n\n#AdvientoSalesiano`;
+  let ok=false;
+  try{await navigator.clipboard.writeText(txt);ok=true}catch(e){
+    try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();ok=document.execCommand('copy');ta.remove()}catch(e2){}
+  }
+  toast(ok?'Copiado. Ya puedes pegarlo en WhatsApp 📋':'No se pudo copiar automáticamente; selecciona el texto a mano.');
+};
+let armed=false,at;
+$('reset').onclick=e=>{
+  const b=e.currentTarget;
+  if(!armed){armed=true;b.classList.add('warn');b.textContent='Pulsa otra vez para borrar el progreso';at=setTimeout(()=>{armed=false;b.classList.remove('warn');b.textContent='Reiniciar mi progreso'},4000);return}
+  clearTimeout(at);armed=false;b.classList.remove('warn');b.textContent='Reiniciar mi progreso';
+  S.opened=[];S.done=[];save();render();toast('Progreso reiniciado');
+};
+
+drawBase();render();
+}
+</script>
+</body>
+</html>
